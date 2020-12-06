@@ -2,7 +2,7 @@
 <suite name="MailRu">
     <test name="MailRu">
         <classes>
-            <class name="ru.mail.login.MailRuLoginTest"/>
+            <class name="ru.mail.pages.MailRuLoginTest"/>
         </classes>
     </test>
 </suite>
