@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: API QA test Geoscan
+  description: REST API for testing QA
+  version: "1.0.0-oas3"
+
+servers:
+- url: http://something.geoscan.aero/api
+
+paths:
+  /projects:
+    get:
+      summary: Get all projects list
+      operationId: findAll
+      description: Возвращает список всех проектов
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      parameters:
+      - $ref: '#/components/parameters/projectName'
+      summary: Create new project
+      operationId: createProject
+      description: Создаёт проект
+      responses:
+        '201':
+          description: Проект успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+  '/projects/{projectId}':
+    parameters:
+    - $ref: '#/components/parameters/projectId'
+    get:
+      summary: Get project by id
+      operationId: getProjectById
+      description: Найти проект по id
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    put:
+      parameters:
+      - $ref: '#/components/parameters/projectName'
+      summary: Update project by id
+      operationId: updateProjectById
+      description: Изменить настойки проекта
+      responses:
+        '200':
+          description: Успешная операция
+        '403':
+          $ref: '#/components/schemas/ForbiddenResponse'
+    delete:
+      summary: Delete project by id
+      operationId: deleteProjectById
+      description: Удалить проект с указанным id
+      responses:
+        '200':
+          description: Проект удален
+
+components:
+  parameters:
+    projectName:
+      in: query
+      name: projectName
+      description: Имя проекта
+      required: true
+      schema:
+        type: string
+    projectId:
+      in: path
+      name: projectId
+      description: id проекта
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  schemas:
+    Project:
+      description: Полётный проект
+      type: object
+      properties:
+        id:
+          description: Идентификатор
+          type: integer
+          format: int64
+        name:
+          description: Имя проекта
+          type: string
+        createdTime:
+          description: Дата/время создания (секунды unix time)
+          type: integer
+          format: int64
+        modifiedTime:
+          description: Дата/время последнего изменения (секунды unix time)
+          type: integer
+          format: int64
+        userId:
+          description: ID пользователя, создавшего проект
+          type: integer
+          format: int64
+        vehiclesId:
+          description: Id устройств, с которыми работает проект
+          type: array
+          items:
+            type: integer
+            format: int64
+        URL:
+          description: Путь до скриншота в системе
+          type: string
+      required:
+      - id
+      - name
+      - createdTime
+      - modifiedTime
+      - userId
+
+    ApiError:
+      title: "Api error"
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        message:
+          type: string
+
+    ForbiddenResponse:
+      description: "Forbidden"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
