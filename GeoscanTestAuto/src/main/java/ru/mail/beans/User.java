@@ -1,17 +1,15 @@
 package ru.mail.beans;
 
-import lombok.Getter;
-
 import java.util.Date;
 
 public class User {
-    private final String username;
-    private final String lastName;
+    private String username;
+    private String lastName;
     private String password;
-    private final String email;
-    private final Date birthDate;
-    private final int genderId;
-    private final String phoneNumber;
+    private String email;
+    private Date birthDate;
+    private int genderId;
+    private String phoneNumber;
 
     public User(String username, String lastName, String password, String email,
                 Date birthDate, int genderId, String phoneNumber) {
@@ -50,6 +48,14 @@ public class User {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setFirstName(String firstName) {
+        this.username = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
 
